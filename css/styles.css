@@ -296,14 +296,6 @@ ul {
     animation: fadeInUp 1s ease-out 0.4s both;
 }
 
-.hero__actions {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: fadeInUp 1s ease-out 0.6s both;
-}
-
 .hero__scroll {
     position: absolute;
     bottom: 40px;
@@ -330,181 +322,148 @@ ul {
     animation: scrollPulse 2s ease-in-out infinite;
 }
 
-/* ============ NOSOTROS ============ */
-.nosotros {
-    background-color: var(--color-bg);
-    text-align: center;
-}
-
-.nosotros__text {
-    max-width: 640px;
-    margin: 0 auto 60px;
-    font-size: 1.05rem;
-    color: var(--color-text-muted);
-    line-height: 1.9;
-}
-
-.nosotros__details {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--gap);
-}
-
-.nosotros__detail {
-    text-align: left;
-    padding: 40px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    transition: all var(--transition);
-}
-
-.nosotros__detail:hover {
-    border-color: var(--color-accent);
-    background-color: var(--color-bg-card);
-    transform: translateY(-4px);
-}
-
-.nosotros__detail-number {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    color: var(--color-accent);
-    display: block;
-    margin-bottom: 16px;
-}
-
-.nosotros__detail h3 {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: var(--color-white);
-    margin-bottom: 12px;
-}
-
-.nosotros__detail p {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-}
-
-/* ============ MENÚ MENSUAL ============ */
-.menu-mensual {
-    background-color: var(--color-bg-alt);
-    text-align: center;
-}
-
-.menu-mensual__intro {
-    max-width: 600px;
-    margin: 0 auto 60px;
-    font-size: 1rem;
-    color: var(--color-text-muted);
-    line-height: 1.8;
-}
-
-.menu-mensual__cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--gap);
-    margin-bottom: 48px;
-}
-
-.menu-card {
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 48px 32px;
-    transition: all var(--transition);
-}
-
-.menu-card:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-
-.menu-card__icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 20px;
-}
-
-.menu-card__title {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    font-weight: 400;
-    color: var(--color-white);
-    margin-bottom: 12px;
-}
-
-.menu-card__desc {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    line-height: 1.7;
-}
-
-/* ============ CARTA ============ */
-.carta {
+/* ============ ALMORZÁ CON NOSOTROS ============ */
+.almuerzo {
     background-color: var(--color-bg);
 }
 
-.carta__layout {
+.almuerzo__layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-rows: auto auto;
+    gap: 40px 80px;
     align-items: center;
 }
 
-.carta__image {
+.almuerzo__header {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.almuerzo__body {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.almuerzo__image {
+    grid-column: 2;
+    grid-row: 1 / 3;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
 }
 
-.carta__image img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.carta__badge {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    background-color: var(--color-accent);
-    color: var(--color-bg);
-    padding: 12px 20px;
-    border-radius: 4px;
-    text-align: center;
-}
-
-.carta__badge-discount {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 1;
-}
-
-.carta__badge-text {
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.carta__text {
-    font-size: 1rem;
+.almuerzo__desc {
+    font-size: 1.05rem;
     color: var(--color-text-muted);
-    line-height: 1.8;
-    margin-bottom: 20px;
+    line-height: 1.9;
+    margin-bottom: 28px;
 }
 
-.carta__promo {
-    font-size: 0.8rem;
+.almuerzo__desc strong {
+    color: var(--color-white);
+    font-weight: 500;
+}
+
+.almuerzo__horario {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.almuerzo__horario span {
+    font-size: 0.85rem;
+    font-weight: 400;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin-bottom: 32px;
-    padding: 12px 0;
+}
+
+.almuerzo__image img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.6s ease;
+}
+
+.almuerzo__image:hover img {
+    transform: scale(1.03);
+}
+
+/* ============ TUS CENAS SON EXPERIENCIAS ============ */
+.cenas {
+    background-color: var(--color-bg-alt);
+}
+
+.cenas__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 40px 80px;
+    align-items: center;
+}
+
+.cenas__header {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.cenas__body {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.cenas__image {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cenas__image img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.6s ease;
+}
+
+.cenas__image:hover img {
+    transform: scale(1.03);
+}
+
+.cenas__desc {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.9;
+    margin-bottom: 28px;
+}
+
+.cenas__desc strong {
+    color: var(--color-white);
+    font-weight: 500;
+}
+
+.cenas__horario {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding: 16px 0;
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
+}
+
+.cenas__horario span {
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-accent);
 }
 
 /* ============ GALERÍA ============ */
@@ -521,12 +480,13 @@ ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
+    position: relative;
 }
 
 .galeria__item {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 1;
+    aspect-ratio: 4/5;
 }
 
 .galeria__item img {
@@ -544,53 +504,57 @@ ul {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10, 10, 10, 0.2);
-    opacity: 0;
-    transition: opacity var(--transition);
+    background: linear-gradient(to bottom, transparent 60%, rgba(10, 10, 10, 0.8) 100%);
+    pointer-events: none;
 }
 
 .galeria__item:hover::after {
     opacity: 1;
 }
 
-/* ============ CONTACTO ============ */
-.contacto {
+/* ============ QUIÉNES SOMOS ============ */
+.nosotros {
     background-color: var(--color-bg);
-    text-align: center;
 }
 
-.contacto__grid {
+.nosotros__layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: 80px;
-    text-align: left;
-    margin-top: 60px;
+    align-items: start;
 }
 
-.contacto__info {
+.nosotros__desc {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
+
+.nosotros__info {
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: 32px;
 }
 
-.contacto__item h3 {
+.nosotros__item h3 {
     font-family: var(--font-display);
     font-size: 1.1rem;
     font-weight: 400;
     color: var(--color-white);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
-.contacto__item p {
+.nosotros__item p {
     font-size: 0.9rem;
     color: var(--color-text-muted);
 }
 
-.contacto__actions {
+.nosotros__actions {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
 }
 
 /* ============ FOOTER ============ */
@@ -688,6 +652,10 @@ ul {
         border-left: 1px solid var(--color-border);
     }
 
+    .header {
+        display: none;
+    }
+
     .nav__menu.active {
         right: 0;
     }
@@ -709,27 +677,87 @@ ul {
         transform: rotate(-45deg) translate(5px, -5px);
     }
 
-    .nosotros__details {
+    .almuerzo__layout {
         grid-template-columns: 1fr;
+        gap: 24px;
     }
 
-    .menu-mensual__cards {
-        grid-template-columns: 1fr;
+    .almuerzo__header {
+        grid-column: 1;
+        grid-row: 1;
     }
 
-    .carta__layout {
+    .almuerzo__image {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .almuerzo__body {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .almuerzo__image img {
+        height: 300px;
+    }
+
+    .almuerzo__horario,
+    .cenas__horario {
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .almuerzo__horario span,
+    .cenas__horario span {
+        font-size: 0.75rem;
+    }
+
+    .almuerzo__body .btn,
+    .cenas__body .btn {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .cenas__layout {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 24px;
+    }
+
+    .cenas__header {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .cenas__image {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .cenas__body {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .cenas__image img {
+        height: 300px;
     }
 
     .galeria__grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .contacto__grid {
+    .nosotros__layout {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 48px;
     }
+
+    .horario__sep {
+    color: var(--color-accent);
+    opacity: 0.5;
+    }
+    
 }
 
 @media (max-width: 600px) {
@@ -737,13 +765,12 @@ ul {
         --section-padding: 60px;
     }
 
-    .hero__logo {
-        width: 130px;
+    .hero {
+        background-attachment: scroll;
     }
 
-    .hero__actions {
-        flex-direction: column;
-        align-items: center;
+    .hero__logo {
+        width: 130px;
     }
 
     .btn--large {
@@ -753,5 +780,9 @@ ul {
 
     .galeria__grid {
         grid-template-columns: 1fr;
+    }
+
+    .cenas__content {
+        padding: 60px 0;
     }
 }
