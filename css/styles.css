@@ -753,8 +753,15 @@ ul {
 
     .almuerzo__horario,
     .cenas__horario {
+        display: flex;
         justify-content: center;
         gap: 12px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .almuerzo__body,
+    .cenas__body {
         text-align: center;
     }
 
