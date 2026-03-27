@@ -263,7 +263,7 @@ ul {
     background-size: cover;
     background-position: center;
     opacity: 0;
-    animation: heroFade 28s infinite;
+    animation: heroFade 32s infinite;
 }
 
 /* Cada slide arranca desfasado: duración total / cantidad de slides */
