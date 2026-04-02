@@ -360,16 +360,17 @@ function initMobileZoom() {
         }
 
         const sorted = [...menuData.categories].sort((a, b) => a.order - b.order);
-        let html = '<div class="menu-cat-grid">';
+
+    let html = '<div class="menu-cat-grid">';
         sorted.forEach(cat => {
-            const count = cat.products ? cat.products.length : 0;
+            // Podés borrar también la variable 'count' si querés, ya que no se va a usar
             html += `
                 <div class="menu-cat-card" data-cat-id="${cat.id}">
                     <div class="menu-cat-card__name">${escapeHtml(cat.name)}</div>
-                    <div class="menu-cat-card__count">${count} ${count === 1 ? 'producto' : 'productos'}</div>
                 </div>
             `;
         });
+
         html += '</div>';
         bodyEl.innerHTML = html;
 
