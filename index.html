@@ -13,15 +13,13 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
-
     <!-- Open Graph -->
     <meta property="og:title" content="Indiana Lounge | Música y Comida Casera">
     <meta property="og:description" content="Música y comida casera en Río Grande, Tierra del Fuego.">
-    <meta property="og:image" content="https://www.indianarestaurante.com/assets/img/og-image.png">
+    <meta property="og:image" content="https://www.indianarestaurante.com.ar/assets/img/og-image.png">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.indianarestaurante.com.ar">
     <meta name="theme-color" content="#0a0a0a">
-
 </head>
 <body>
 
@@ -32,9 +30,7 @@
                 <img src="assets/logos/logo-indiana.png" alt="Indiana Lounge" class="nav__logo-img">
             </a>
             <button class="nav__toggle" id="navToggle" aria-label="Abrir menú">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
             <ul class="nav__menu" id="navMenu">
                 <li><a href="#inicio" class="nav__link">Inicio</a></li>
@@ -48,11 +44,11 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero" id="hero">
-        <div class="hero__bg" style="background-image: url('assets/img/hero-bg.jpg?v=1.1')"></div>
+        <div class="hero__bg" id="heroBg" style="background-image: url('assets/img/hero-bg.jpg')"></div>
         <div class="hero__overlay"></div>
         <div class="hero__content">
             <img src="assets/logos/logo-indiana.png" alt="Indiana Lounge" class="hero__logo">
-            <p class="hero__tagline">Música y comida casera</p>
+            <p class="hero__tagline" id="heroTagline">Música y comida casera</p>
             <p class="hero__sub">Panamá 708 · Río Grande</p>
         </div>
         <div class="hero__scroll">
@@ -61,86 +57,67 @@
         </div>
     </section>
 
-<!-- ============ ALMORZÁ CON NOSOTROS — MENÚ MENSUAL ============ -->
+    <!-- ============ ALMORZÁ CON NOSOTROS ============ -->
     <section class="section almuerzo" id="almuerzo">
         <div class="container">
             <div class="almuerzo__layout">
                 <div class="almuerzo__header">
-                    <span class="section__label">Menú mensual</span>
-                    <h2 class="section__title">Almorzá<br>con nosotros</h2>
+                    <span class="section__label" id="almuerzoLabel">Menú mensual</span>
+                    <h2 class="section__title" id="almuerzoTitle">Almorzá<br>con nosotros</h2>
                 </div>
                 <div class="almuerzo__image">
                     <div class="almuerzo__slider">
-                        <div class="almuerzo__slides">
-                            <img src="assets/img/almuerzo-01.jpg?v=1.2" alt="Menú Indiana">
-                            <img src="assets/img/almuerzo-02.jpg?v=1.2" alt="Menú Indiana">
-                            <img src="assets/img/almuerzo-03.jpg?v=1.2" alt="Menú Indiana">
-                            <img src="assets/img/almuerzo-04.jpg?v=1.2" alt="Menú Indiana">
-                            <img src="assets/img/almuerzo-05.jpg?v=1.2" alt="Menú Indiana">
-                            <img src="assets/img/almuerzo-01.jpg?v=1.2" alt="Menú Indiana">
+                        <div class="almuerzo__slides" id="almuerzoSlides">
+                            <!-- Imágenes cargadas dinámicamente -->
                         </div>
                     </div>
                 </div>
                 <div class="almuerzo__body">
-                    <p class="almuerzo__desc">
-                        Almorza con nosotros mensualmente por $200.000 o 
-                        diariamente por $12.000, cubriendo todos tus almuerzos de lunes 
-                        a viernes, ofreciéndote la posibilidad de un servicio de mesa o 
-                        envío a cargo del cliente.
-                    </p>
-                        <div class="almuerzo__horario">
-                            <span>Lunes a Viernes</span>
-                            <span class="horario__sep">·</span>
-                            <span>11:30 hs a 15:00 hs</span>
-                        </div>
-                    <a href="https://api.whatsapp.com/send/?phone=5492964466324&text=Hola!%20Quiero%20consultar%20por%20el%20menú%20mensual&type=phone_number&app_absent=0" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                    <p class="almuerzo__desc" id="almuerzoDesc">Cargando...</p>
+                    <div class="almuerzo__horario">
+                        <span id="almuerzoDias">Lunes a Viernes</span>
+                        <span class="horario__sep">·</span>
+                        <span id="almuerzoHoras">11:30 hs a 15:00 hs</span>
+                    </div>
+                    <a id="almuerzoWhatsapp" href="#" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
                         <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Contactanos por WhatsApp
+                        <span id="almuerzoBtnText">Contactanos por WhatsApp</span>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- =============== TUS CENAS SON EXPERIENCIAS ============ -->
+    <!-- ============ CENAS ============ -->
     <section class="section cenas" id="cenas">
         <div class="container">
             <div class="cenas__layout">
                 <div class="cenas__header">
-                    <span class="section__label">Cená con nosotros</span>
-                    <h2 class="section__title">Tus cenas son<br>experiencias</h2>
+                    <span class="section__label" id="cenasLabel">Cená con nosotros</span>
+                    <h2 class="section__title" id="cenasTitle">Tus cenas son<br>experiencias</h2>
                 </div>
                 <div class="cenas__image">
                     <div class="cenas__slider">
-                        <div class="cenas__slides">
-                            <img src="assets/img/cena-01.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-02.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-03.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-04.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-05.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-06.jpg?v=1.2" alt="Cenas Indiana">
-                            <img src="assets/img/cena-01.jpg?v=1.2" alt="Cenas Indiana">
+                        <div class="cenas__slides" id="cenasSlides">
+                            <!-- Imágenes cargadas dinámicamente -->
                         </div>
                     </div>
                 </div>
                 <div class="cenas__body">
-                    <p class="cenas__desc">
-                        De miércoles a sábados decidimos crear un ambiente especial, que cada cena se vuelva una experiencia. Con nuestra carta regional, vení a pasar un momento de calidad junto con tus amigos o seres queridos. ¿Querés saber más beneficios de hacer una reserva? Hacé click acá abajo.
-                    </p>
-                        <div class="cenas__horario">
-                            <span>Miércoles a Sábados</span>
-                            <span class="horario__sep">·</span>
-                            <span>20:00hs a 00:30hs</span>
-                        </div>
-                    <a href="https://api.whatsapp.com/send/?phone=5492964466324&text=Hola!%20Quiero%20hacer%20una%20reserva&type=phone_number&app_absent=0" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                    <p class="cenas__desc" id="cenasDesc">Cargando...</p>
+                    <div class="cenas__horario">
+                        <span id="cenasDias">Miércoles a Sábados</span>
+                        <span class="horario__sep">·</span>
+                        <span id="cenasHoras">20:00hs a 00:30hs</span>
+                    </div>
+                    <a id="cenasWhatsapp" href="#" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
                         <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Hacé tu reserva
+                        <span id="cenasBtnText">Hacé tu reserva</span>
                     </a>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!-- ============ GALERÍA ============ -->
     <section class="section galeria" id="galeria">
@@ -148,26 +125,9 @@
             <span class="section__label">Galería</span>
             <h2 class="section__title">Nuestros platos</h2>
         </div>
-            <div class="galeria__grid">
-                <div class="galeria__item">
-                    <img src="assets/img/plato-01.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-                <div class="galeria__item">
-                    <img src="assets/img/plato-02.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-                <div class="galeria__item">
-                    <img src="assets/img/plato-03.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-                <div class="galeria__item">
-                    <img src="assets/img/plato-04.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-                <div class="galeria__item">
-                    <img src="assets/img/plato-05.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-                <div class="galeria__item">
-                    <img src="assets/img/plato-06.jpg?v=1.3" alt="Plato Indiana" loading="lazy">
-                </div>
-            </div>
+        <div class="galeria__grid" id="galeriaGrid">
+            <!-- Imágenes cargadas dinámicamente -->
+        </div>
     </section>
 
     <!-- ============ QUIÉNES SOMOS ============ -->
@@ -175,39 +135,33 @@
         <div class="container">
             <div class="nosotros__layout">
                 <div class="nosotros__text">
-                    <span class="section__label">Quiénes somos</span>
-                    <h2 class="section__title">Indiana Restaurante</h2>
-                        <p class="nosotros__desc">
-                            Indiana es un restaurante inaugurado en agosto del 2025 por dos amigos emprendedores, que con el fin de poder brindar un ambiente de cena family-friendly lograron que tu cena se vuelva una experiencia.
-                        </p>
-                        <p class="nosotros__desc">
-                            Nos caracterizamos por nuestros platos regionales como el salmón salvaje, la trucha, frutas y verduras patagónicas de temporada. Además de nuestros tragos de autor y nuestras reformas en carta mensualmente para ofrecer tragos con y sin alcohol. 
-                        </p>
-                            <p class="nosotros__desc">
-                            Te esperamos en la plaza de los animales de Río Grande - Tierra Del Fuego.
-                        </p>
+                    <span class="section__label" id="nosotrosLabel">Quiénes somos</span>
+                    <h2 class="section__title" id="nosotrosTitle">Indiana Restaurante</h2>
+                    <div id="nosotrosDescriptions">
+                        <p class="nosotros__desc">Cargando...</p>
+                    </div>
                 </div>
                 <div class="nosotros__info">
                     <div class="nosotros__item">
                         <h3>Dirección</h3>
-                        <p>Panamá 708, Río Grande</p>
+                        <p id="nosotrosAddress">Panamá 708, Río Grande</p>
                     </div>
                     <div class="nosotros__item">
                         <h3>Almuerzos</h3>
-                        <p>Lunes a Viernes</p>
-                        <p>11:30hs a 15:00hs</p>
+                        <p id="nosotrosAlmuerzoDias">Lunes a Viernes</p>
+                        <p id="nosotrosAlmuerzoHoras">11:30hs a 15:00hs</p>
                     </div>
                     <div class="nosotros__item">
                         <h3>Cenas</h3>
-                        <p>Miércoles a Sábados</p>
-                        <p>20:00hs a 00:30hs</p>
+                        <p id="nosotrosCenasDias">Miércoles a Sábados</p>
+                        <p id="nosotrosCenasHoras">20:00hs a 00:30hs</p>
                     </div>
                     <div class="nosotros__actions">
-                        <a href="https://api.whatsapp.com/send/?phone=5492964466324&type=phone_number&app_absent=0" class="btn btn--primary btn--large" target="_blank" rel="noopener noreferrer">
+                        <a id="nosotrosWhatsapp" href="#" class="btn btn--primary btn--large" target="_blank" rel="noopener noreferrer">
                             <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                             WhatsApp
                         </a>
-                        <a href="https://www.instagram.com/indiana.restaurante/" class="btn btn--outline btn--large" target="_blank" rel="noopener noreferrer">
+                        <a id="nosotrosInstagram" href="#" class="btn btn--outline btn--large" target="_blank" rel="noopener noreferrer">
                             <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                             Instagram
                         </a>
@@ -227,6 +181,11 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+    <!-- Config + App -->
+    <script src="js/config.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
