@@ -305,3 +305,118 @@ function initMobileZoom() {
     nextBtn.addEventListener('click', (e) => { e.stopPropagation(); zoomIndex = (zoomIndex + 1) % allSrcs.length; showImage(zoomIndex); });
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
 }
+
+// ════════════════════════════════════════
+//  MENÚ MODAL (PÚBLICO)
+// ════════════════════════════════════════
+
+(function initMenuModal() {
+    const openBtn    = document.getElementById('openMenuBtn');
+    const modal      = document.getElementById('menuModal');
+    const backdrop   = document.getElementById('menuBackdrop');
+    const closeBtn   = document.getElementById('menuModalClose');
+    const backBtn    = document.getElementById('menuModalBack');
+    const titleEl    = document.getElementById('menuModalTitle');
+    const bodyEl     = document.getElementById('menuModalBody');
+
+    if (!openBtn || !modal) return;
+
+    let menuData = null;
+
+    openBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (!menuData) await loadMenuData();
+        showCategories();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+
+    backBtn.addEventListener('click', () => showCategories());
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    async function loadMenuData() {
+        try {
+            const doc = await db.collection('site_content').doc('menu').get();
+            if (doc.exists) menuData = doc.data();
+        } catch (err) {
+            console.warn('Error cargando menú:', err);
+        }
+    }
+
+    function showCategories() {
+        titleEl.textContent = 'Nuestra Carta';
+        backBtn.style.display = 'none';
+
+        if (!menuData || !menuData.categories || !menuData.categories.length) {
+            bodyEl.innerHTML = '<p style="text-align:center;color:#8a8580;">El menú no está disponible en este momento.</p>';
+            return;
+        }
+
+        const sorted = [...menuData.categories].sort((a, b) => a.order - b.order);
+        let html = '<div class="menu-cat-grid">';
+        sorted.forEach(cat => {
+            const count = cat.products ? cat.products.length : 0;
+            html += `
+                <div class="menu-cat-card" data-cat-id="${cat.id}">
+                    <div class="menu-cat-card__name">${escapeHtml(cat.name)}</div>
+                    <div class="menu-cat-card__count">${count} ${count === 1 ? 'producto' : 'productos'}</div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        bodyEl.innerHTML = html;
+
+        bodyEl.querySelectorAll('.menu-cat-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const catId = card.dataset.catId;
+                const cat = sorted.find(c => c.id === catId);
+                if (cat) showProducts(cat);
+            });
+        });
+    }
+
+    function showProducts(cat) {
+        titleEl.textContent = cat.name;
+        backBtn.style.display = 'block';
+
+        if (!cat.products || !cat.products.length) {
+            bodyEl.innerHTML = '<p style="text-align:center;color:#8a8580;">Sin productos en esta categoría.</p>';
+            return;
+        }
+
+        const sorted = [...cat.products].sort((a, b) => a.order - b.order);
+        let html = '<div class="menu-product-list">';
+        sorted.forEach(prod => {
+            html += `
+                <div class="menu-product-card">
+                    <div class="menu-product-card__header">
+                        <span class="menu-product-card__name">${escapeHtml(prod.name)}</span>
+                        <span class="menu-product-card__price">$ ${formatPrice(prod.price)}</span>
+                    </div>
+                    ${prod.description ? `<div class="menu-product-card__desc">${escapeHtml(prod.description)}</div>` : ''}
+                    ${prod.taxFreePrice ? `<div class="menu-product-card__tax">Sin impuestos nacionales: $ ${formatPrice(prod.taxFreePrice)}</div>` : ''}
+                </div>
+            `;
+        });
+        html += '</div>';
+        bodyEl.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+    }
+
+    function formatPrice(n) {
+        if (n == null) return '0';
+        return Number(n).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+})();

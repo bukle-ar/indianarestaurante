@@ -111,6 +111,7 @@ async function loadAllData() {
         const snap = await db.collection('site_content').get();
         snap.forEach(doc => { siteData[doc.id] = doc.data(); });
         populateAllFields();
+        await loadMenuAdmin();
     } catch (err) {
         console.error('Error cargando datos:', err);
         showToast('Error al cargar los datos', 'error');
@@ -249,6 +250,12 @@ async function saveAllData() {
             whatsapp:  getVal('socialWhatsapp'),
             instagram: getVal('socialInstagram'),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Menú
+        batch.set(db.collection('site_content').doc('menu'), {
+            categories: menuCategories,
+            updatedAt:  firebase.firestore.FieldValue.serverTimestamp()
         });
 
         await batch.commit();
@@ -552,3 +559,256 @@ function showToast(msg, type = '') {
     toast.className = 'toast show ' + type;
     setTimeout(() => { toast.className = 'toast'; }, 4000);
 }
+
+// ════════════════════════════════════════
+//  MOBILE SIDEBAR TOGGLE
+// ════════════════════════════════════════
+(function() {
+    const toggle  = document.getElementById('mobileToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (!toggle || !sidebar) return;
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+    }
+
+    // Cerrar sidebar al tocar un link (mobile)
+    document.querySelectorAll('.sidebar__link').forEach(link => {
+        link.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+        });
+    });
+})();
+
+
+// ════════════════════════════════════════
+//  MENU ADMIN CRUD
+// ════════════════════════════════════════
+let menuCategories = [];
+let currentEditCat = null;
+
+async function loadMenuAdmin() {
+    try {
+        const doc = await db.collection('site_content').doc('menu').get();
+        if (doc.exists && doc.data().categories) {
+            menuCategories = doc.data().categories.sort((a, b) => a.order - b.order);
+        } else {
+            menuCategories = [];
+        }
+    } catch (err) {
+        menuCategories = [];
+    }
+    renderMenuCategories();
+}
+
+function renderMenuCategories() {
+    const list = document.getElementById('menuCategoriesList');
+    const countEl = document.getElementById('menuCatCount');
+    if (!list) return;
+
+    list.innerHTML = '';
+    if (countEl) countEl.textContent = menuCategories.length;
+
+    menuCategories.forEach((cat, i) => {
+        const prodCount = cat.products ? cat.products.length : 0;
+        const div = document.createElement('div');
+        div.classList.add('menu-cat-item');
+        div.innerHTML = `
+            <div class="menu-cat-item__info">
+                <span class="menu-cat-item__name">${cat.name}</span>
+                <span class="menu-cat-item__count">${prodCount} productos</span>
+            </div>
+            <div class="menu-cat-item__actions">
+                <button class="btn-outline btn-sm" data-action="edit-cat" data-index="${i}">Editar</button>
+                <button class="btn-danger" data-action="delete-cat" data-index="${i}">Eliminar</button>
+                <span class="menu-cat-item__arrow">›</span>
+            </div>
+        `;
+
+        // Click en la fila abre los productos
+        div.addEventListener('click', (e) => {
+            if (e.target.closest('[data-action]')) return;
+            openCategoryProducts(i);
+        });
+
+        div.querySelector('[data-action="edit-cat"]').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const newName = prompt('Nombre de la categoría:', cat.name);
+            if (newName && newName.trim()) {
+                menuCategories[i].name = newName.trim().toUpperCase();
+                renderMenuCategories();
+                showToast('Categoría renombrada. Guardá los cambios.', 'success');
+            }
+        });
+
+        div.querySelector('[data-action="delete-cat"]').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm(`¿Eliminar la categoría "${cat.name}" y todos sus productos?`)) {
+                menuCategories.splice(i, 1);
+                menuCategories.forEach((c, idx) => c.order = idx);
+                renderMenuCategories();
+                showToast('Categoría eliminada. Guardá los cambios.', 'success');
+            }
+        });
+
+        list.appendChild(div);
+    });
+}
+
+function openCategoryProducts(catIndex) {
+    currentEditCat = catIndex;
+    document.getElementById('menuCategoriesCard').style.display = 'none';
+    document.getElementById('menuProductsCard').style.display = 'block';
+    document.getElementById('menuProductsTitle').textContent = menuCategories[catIndex].name;
+    renderMenuProducts();
+}
+
+function renderMenuProducts() {
+    const cat = menuCategories[currentEditCat];
+    if (!cat) return;
+
+    const list = document.getElementById('menuProductsList');
+    list.innerHTML = '';
+
+    const products = cat.products || [];
+    products.sort((a, b) => a.order - b.order);
+
+    products.forEach((prod, i) => {
+        const div = document.createElement('div');
+        div.classList.add('menu-product-item');
+        div.innerHTML = `
+            <div class="menu-product-item__info">
+                <div class="menu-product-item__name">${prod.name}</div>
+                <div class="menu-product-item__desc">${prod.description || ''} ${prod.taxFreePrice ? '| Sin imp: $' + Number(prod.taxFreePrice).toLocaleString('es-AR') : ''}</div>
+            </div>
+            <span class="menu-product-item__price">$ ${Number(prod.price || 0).toLocaleString('es-AR')}</span>
+            <div class="menu-product-item__actions">
+                <button class="btn-outline btn-sm" data-action="edit-prod">Editar</button>
+                <button class="btn-danger" data-action="delete-prod">Eliminar</button>
+            </div>
+        `;
+
+        div.querySelector('[data-action="edit-prod"]').addEventListener('click', () => editProduct(i));
+        div.querySelector('[data-action="delete-prod"]').addEventListener('click', () => {
+            if (confirm(`¿Eliminar "${prod.name}"?`)) {
+                cat.products.splice(i, 1);
+                cat.products.forEach((p, idx) => p.order = idx);
+                renderMenuProducts();
+                showToast('Producto eliminado. Guardá los cambios.', 'success');
+            }
+        });
+
+        list.appendChild(div);
+    });
+}
+
+function editProduct(prodIndex) {
+    const cat = menuCategories[currentEditCat];
+    const isNew = prodIndex === -1;
+    const prod = isNew ? { name: '', price: 0, taxFreePrice: 0, description: '', order: (cat.products || []).length } : cat.products[prodIndex];
+
+    const existing = document.querySelector('.product-form');
+    if (existing) existing.remove();
+
+    const form = document.createElement('div');
+    form.classList.add('product-form');
+    form.innerHTML = `
+        <div class="product-form__header">
+            <span class="product-form__title">${isNew ? 'Nuevo producto' : 'Editar producto'}</span>
+            <button class="btn-sm btn-outline" id="cancelProdForm">Cancelar</button>
+        </div>
+        <div class="field">
+            <label>Nombre</label>
+            <input type="text" id="prodName" value="${prod.name}" maxlength="80">
+        </div>
+        <div class="field">
+            <label>Descripción (opcional)</label>
+            <input type="text" id="prodDesc" value="${prod.description || ''}" maxlength="200">
+        </div>
+        <div class="field-row">
+            <div class="field">
+                <label>Precio ($)</label>
+                <input type="number" id="prodPrice" value="${prod.price || 0}" min="0" step="0.01">
+            </div>
+            <div class="field">
+                <label>Precio sin impuestos ($)</label>
+                <input type="number" id="prodTaxFree" value="${prod.taxFreePrice || 0}" min="0" step="0.01">
+            </div>
+        </div>
+        <button class="btn-primary btn-sm" id="saveProdForm" style="margin-top:12px;">Guardar producto</button>
+    `;
+
+    const list = document.getElementById('menuProductsList');
+    list.parentNode.insertBefore(form, list);
+
+    form.querySelector('#cancelProdForm').addEventListener('click', () => form.remove());
+    form.querySelector('#saveProdForm').addEventListener('click', () => {
+        const name = document.getElementById('prodName').value.trim();
+        if (!name) { showToast('El nombre es obligatorio', 'error'); return; }
+
+        const data = {
+            name: name,
+            description: document.getElementById('prodDesc').value.trim(),
+            price: parseFloat(document.getElementById('prodPrice').value) || 0,
+            taxFreePrice: parseFloat(document.getElementById('prodTaxFree').value) || 0,
+            order: prod.order
+        };
+
+        if (isNew) {
+            if (!cat.products) cat.products = [];
+            cat.products.push(data);
+        } else {
+            cat.products[prodIndex] = data;
+        }
+
+        form.remove();
+        renderMenuProducts();
+        showToast('Producto actualizado. Guardá los cambios.', 'success');
+    });
+
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Init menu admin buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const backBtn = document.getElementById('menuBackBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            document.getElementById('menuProductsCard').style.display = 'none';
+            document.getElementById('menuCategoriesCard').style.display = 'block';
+            currentEditCat = null;
+        });
+    }
+
+    const addCatBtn = document.getElementById('addCategoryBtn');
+    if (addCatBtn) {
+        addCatBtn.addEventListener('click', () => {
+            const name = prompt('Nombre de la nueva categoría:');
+            if (name && name.trim()) {
+                menuCategories.push({
+                    id: name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+                    name: name.trim().toUpperCase(),
+                    order: menuCategories.length,
+                    products: []
+                });
+                renderMenuCategories();
+                showToast('Categoría creada. Guardá los cambios.', 'success');
+            }
+        });
+    }
+
+    const addProdBtn = document.getElementById('addProductBtn');
+    if (addProdBtn) {
+        addProdBtn.addEventListener('click', () => editProduct(-1));
+    }
+});

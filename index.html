@@ -50,6 +50,7 @@
             <img src="assets/logos/logo-indiana.png" alt="Indiana Lounge" class="hero__logo">
             <p class="hero__tagline" id="heroTagline">Música y comida casera</p>
             <p class="hero__sub">Panamá 708 · Río Grande</p>
+            <a href="#" class="btn-menu-trigger" id="openMenuBtn">Ver menú</a>
         </div>
         <div class="hero__scroll">
             <span>Descubrí más</span>
@@ -170,6 +171,23 @@
             </div>
         </div>
     </section>
+
+        <!-- ============ MODAL MENÚ ============ -->
+    <div class="menu-modal" id="menuModal">
+        <div class="menu-modal__backdrop" id="menuBackdrop"></div>
+        <div class="menu-modal__container">
+            <div class="menu-modal__header">
+                <button class="menu-modal__back" id="menuModalBack" style="display:none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <h3 class="menu-modal__title" id="menuModalTitle">Nuestra Carta</h3>
+                <button class="menu-modal__close" id="menuModalClose">&times;</button>
+            </div>
+            <div class="menu-modal__body" id="menuModalBody">
+                <!-- Categorías o productos se cargan dinámicamente -->
+            </div>
+        </div>
+    </div>
 
     <!-- ============ FOOTER ============ -->
     <footer class="footer">
