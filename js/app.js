@@ -245,10 +245,12 @@ function setHTML(id, val) {
     if (el && val != null) el.innerHTML = val;
 }
 
-/** Convierte \n en <br> para títulos multilínea */
+/** Convierte \n en <br> para títulos multilínea (sanitizado contra XSS) */
 function brText(str) {
     if (!str) return '';
-    return str.replace(/\n/g, '<br>');
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML.replace(/\n/g, '<br>');
 }
 
 /** Slider automático infinito */
