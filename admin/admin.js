@@ -342,11 +342,11 @@ function createImageItem(url, publicId, order) {
 
     item.querySelector('.img-grid__delete').addEventListener('click', (e) => {
         e.stopPropagation();
-        if (confirm('¿Eliminar esta imagen?')) {
+        modalConfirm('Eliminar imagen', '¿Eliminar esta imagen?').then(ok => { if (ok) {
             if (publicId) deletedImages.push(publicId);
             item.remove();
             updateOrderNumbers(item.parentElement || document.querySelector('.img-grid'));
-        }
+        }});
     });
 
     return item;
@@ -512,6 +512,66 @@ function updateAllCounters() {
     });
 }
 
+// ════════════════════════════════════════
+//  MODAL CUSTOM
+// ════════════════════════════════════════
+function showModal({ title, body, buttons }) {
+    const modal = document.getElementById('adminModal');
+    const titleEl = document.getElementById('adminModalTitle');
+    const bodyEl = document.getElementById('adminModalBody');
+    const actionsEl = document.getElementById('adminModalActions');
+    const backdrop = document.getElementById('adminModalBackdrop');
+
+    titleEl.textContent = title || '';
+    bodyEl.innerHTML = body || '';
+    actionsEl.innerHTML = '';
+
+    buttons.forEach(btn => {
+        const el = document.createElement('button');
+        el.textContent = btn.text;
+        el.className = btn.primary ? 'btn-primary btn-sm' : 'btn-outline btn-sm';
+        el.addEventListener('click', () => {
+            modal.classList.remove('active');
+            if (btn.action) btn.action();
+        });
+        actionsEl.appendChild(el);
+    });
+
+    backdrop.onclick = () => modal.classList.remove('active');
+    modal.classList.add('active');
+    setTimeout(() => { const i = bodyEl.querySelector('input'); if (i) i.focus(); }, 100);
+}
+
+function modalPrompt(title, placeholder, defaultVal) {
+    return new Promise(resolve => {
+        showModal({
+            title,
+            body: `<div class="field"><input type="text" id="modalInput" placeholder="${placeholder || ''}" value="${defaultVal || ''}" maxlength="80"></div>`,
+            buttons: [
+                { text: 'Cancelar', action: () => resolve(null) },
+                { text: 'Aceptar', primary: true, action: () => resolve(document.getElementById('modalInput').value.trim() || null) }
+            ]
+        });
+        setTimeout(() => {
+            const inp = document.getElementById('modalInput');
+            if (inp) inp.onkeydown = e => { if (e.key === 'Enter') { document.getElementById('adminModal').classList.remove('active'); resolve(inp.value.trim() || null); } };
+        }, 100);
+    });
+}
+
+function modalConfirm(title, message) {
+    return new Promise(resolve => {
+        showModal({
+            title,
+            body: `<p>${message}</p>`,
+            buttons: [
+                { text: 'Cancelar', action: () => resolve(false) },
+                { text: 'Confirmar', primary: true, action: () => resolve(true) }
+            ]
+        });
+    });
+}
+
 
 // ════════════════════════════════════════
 //  HELPERS
@@ -573,6 +633,14 @@ function showToast(msg, type = '') {
         sidebar.classList.toggle('open');
         overlay.classList.toggle('active');
     });
+
+    const closeBtn = document.getElementById('sidebarClose');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
+        });
+    }
 
     if (overlay) {
         overlay.addEventListener('click', () => {
@@ -641,19 +709,20 @@ function renderMenuCategories() {
             openCategoryProducts(i);
         });
 
-        div.querySelector('[data-action="edit-cat"]').addEventListener('click', (e) => {
+        div.querySelector('[data-action="edit-cat"]').addEventListener('click', async (e) => {
             e.stopPropagation();
-            const newName = prompt('Nombre de la categoría:', cat.name);
-            if (newName && newName.trim()) {
-                menuCategories[i].name = newName.trim().toUpperCase();
+            const newName = await modalPrompt('Renombrar categoría', 'Nombre', cat.name);
+            if (newName) {
+                menuCategories[i].name = newName.toUpperCase();
                 renderMenuCategories();
                 showToast('Categoría renombrada. Guardá los cambios.', 'success');
             }
         });
 
-        div.querySelector('[data-action="delete-cat"]').addEventListener('click', (e) => {
+        div.querySelector('[data-action="delete-cat"]').addEventListener('click', async (e) => {
             e.stopPropagation();
-            if (confirm(`¿Eliminar la categoría "${cat.name}" y todos sus productos?`)) {
+            const ok = await modalConfirm('Eliminar categoría', `¿Eliminar <strong>${cat.name}</strong> y todos sus productos?`);
+            if (ok) {
                 menuCategories.splice(i, 1);
                 menuCategories.forEach((c, idx) => c.order = idx);
                 renderMenuCategories();
@@ -699,8 +768,9 @@ function renderMenuProducts() {
         `;
 
         div.querySelector('[data-action="edit-prod"]').addEventListener('click', () => editProduct(i));
-        div.querySelector('[data-action="delete-prod"]').addEventListener('click', () => {
-            if (confirm(`¿Eliminar "${prod.name}"?`)) {
+        div.querySelector('[data-action="delete-prod"]').addEventListener('click', async () => {
+            const ok = await modalConfirm('Eliminar producto', `¿Eliminar <strong>${prod.name}</strong>?`);
+            if (ok) {
                 cat.products.splice(i, 1);
                 cat.products.forEach((p, idx) => p.order = idx);
                 renderMenuProducts();
@@ -792,12 +862,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addCatBtn = document.getElementById('addCategoryBtn');
     if (addCatBtn) {
-        addCatBtn.addEventListener('click', () => {
-            const name = prompt('Nombre de la nueva categoría:');
-            if (name && name.trim()) {
+    addCatBtn.addEventListener('click', async () => {
+            const name = await modalPrompt('Nueva categoría', 'Nombre de la categoría');
+            if (name) {
                 menuCategories.push({
-                    id: name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-                    name: name.trim().toUpperCase(),
+                    id: name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+                    name: name.toUpperCase(),
                     order: menuCategories.length,
                     products: []
                 });

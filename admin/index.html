@@ -36,6 +36,7 @@
 
         <!-- Sidebar -->
         <aside class="sidebar">
+            <button class="sidebar__close" id="sidebarClose">&times;</button>
             <div class="sidebar__brand">
                 <img src="../assets/logos/logo-indiana.png" alt="Indiana" class="sidebar__logo">
                 <span>Admin</span>
@@ -343,6 +344,16 @@
 
             </div>
         </main>
+    </div>
+
+    <!-- Modal custom -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal__backdrop" id="adminModalBackdrop"></div>
+        <div class="admin-modal__box">
+            <h3 class="admin-modal__title" id="adminModalTitle"></h3>
+            <div class="admin-modal__body" id="adminModalBody"></div>
+            <div class="admin-modal__actions" id="adminModalActions"></div>
+        </div>
     </div>
 
     <!-- Loading overlay -->
